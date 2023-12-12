@@ -1,10 +1,18 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:medrec/Utils/connector.dart';
+import 'package:medrec/Pages/view_prescription.dart';
 import 'package:medrec/Utils/routes.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:web3dart/credentials.dart';
+
+
+
+
 
 class DoctorHomePage extends StatefulWidget {
   const DoctorHomePage({Key? key}) : super(key: key);
@@ -22,6 +30,21 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   TextEditingController advice = TextEditingController();
   bool isAuthorized = false;
   bool showLoading = false;
+  TextEditingController doctorAddress = TextEditingController();
+  List<List<String>> prescriptions = [];
+  // void getPrescriptions() async {
+  //   setState(() {
+  //     showLoading = true;
+  //   });
+  //   List<dynamic> result = await Connector.getPresc(EthereumAddress.fromHex(patientAddress.text));
+  //   for (var element in result) {
+  //     prescriptions.add(element.toString().split('#'));
+  //   }
+  //   prescriptions = prescriptions.reversed.toList();
+  //   setState(() {
+  //     showLoading = false;
+  //   });
+  // }
 
   void checkAuthorization() async {
     if (patientAddress.text.length < 40) {
@@ -36,6 +59,12 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     if (!isAuthorized) {
       Fluttertoast.showToast(
           msg: "You are not authorized to give prescription.");
+    }else{
+      List<dynamic> result = await Connector.getPresc(EthereumAddress.fromHex(patientAddress.text));
+    for (var element in result) {
+      prescriptions.add(element.toString().split('#'));
+    }
+    prescriptions = prescriptions.reversed.toList();
     }
     setState(() {
       showLoading = false;
@@ -87,7 +116,6 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
       });
     }
   }
-
 
   void getFee() async {
     feeController.text = await Connector.getFee(Connector.address);
@@ -452,11 +480,222 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                             isAuthorized
                                 ? Padding(
                                     padding: const EdgeInsets.all(16.0),
-                                    
                                     child: Column(
                                       children: [
                                         CupertinoFormSection(
                                           children: [
+                                            Center(
+                                              child: Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                height: 50,
+                                                padding:
+                                                    const EdgeInsets.all(8),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: const [
+                                                    Icon(
+                                                      FontAwesomeIcons.timeline,
+                                                      color: Colors.black,
+                                                      size: 25,
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          EdgeInsets.all(8.0),
+                                                      child: VerticalDivider(
+                                                        color: Colors.black,
+                                                        thickness: 1,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      'Medical History',
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            (showLoading == false &&
+                                                    prescriptions.isNotEmpty)
+                                                ? ListView.builder(
+                                                    itemCount:
+                                                        prescriptions.length,
+                                                    shrinkWrap: true,
+                                                    itemBuilder:
+                                                        (BuildContext context,
+                                                            int index) {
+                                                      return InkWell(
+                                                        onTap: () async {
+                                                          await Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) => ViewPrescription(
+                                                                      index:
+                                                                          index +
+                                                                              1,
+                                                                      record: prescriptions[
+                                                                          index])));
+                                                        },
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .fromLTRB(
+                                                                  16, 8, 16, 8),
+                                                          child: Container(
+                                                              // margin: EdgeInsets.all(16),
+                                                              // height: 100,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(16),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .white,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15),
+                                                                boxShadow: [
+                                                                  BoxShadow(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    blurRadius:
+                                                                        7,
+                                                                    offset: const Offset(
+                                                                        0,
+                                                                        3), // changes position of shadow
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              child: Row(
+                                                                children: [
+                                                                  Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .only(
+                                                                        right:
+                                                                            8.0),
+                                                                    child:
+                                                                        ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5),
+                                                                      child:
+                                                                          Container(
+                                                                        color: Colors
+                                                                            .black,
+                                                                        child:
+                                                                            Text(
+                                                                          "  ${index + 1}  ",
+                                                                          style:
+                                                                              const TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  const VerticalDivider(
+                                                                    thickness:
+                                                                        2,
+                                                                  ),
+                                                                  Column(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .start,
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children: [
+                                                                          const Icon(
+                                                                            FontAwesomeIcons.clock,
+                                                                            size:
+                                                                                15,
+                                                                            // color: Colors.grey,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          ),
+                                                                          Text(
+                                                                            prescriptions[index][0],
+                                                                            // style:
+                                                                            //     Theme.of(context).textTheme.caption,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.start,
+                                                                        children: [
+                                                                          const Icon(
+                                                                            FontAwesomeIcons.userDoctor,
+                                                                            size:
+                                                                                15,
+                                                                            color:
+                                                                                Colors.grey,
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                10,
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width - 200,
+                                                                            // height: 30,
+                                                                            child:
+                                                                                Text(
+                                                                              prescriptions[index][1],
+                                                                              style: Theme.of(context).textTheme.caption,
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                ],
+                                                              )),
+                                                        ),
+                                                      );
+                                                    },
+                                                  )
+                                                : showLoading == true
+                                                    ? const Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              EdgeInsets.only(
+                                                                  top: 40),
+                                                          child:
+                                                              CupertinoActivityIndicator(
+                                                            radius: 20,
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : const Padding(
+                                                        padding:
+                                                            EdgeInsets.only(
+                                                                top: 32.0,
+                                                                left: 16),
+                                                        child: Text(
+                                                          "No Medical History!",
+                                                          style: TextStyle(
+                                                              fontSize: 70,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.grey),
+                                                        ),
+                                                      ),
                                             CupertinoFormRow(
                                               child: CupertinoTextFormFieldRow(
                                                 controller: notes,
