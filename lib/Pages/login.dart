@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               ListTile(
                 leading: const Icon(
-                  CupertinoIcons.person_alt_circle,
+                  CupertinoIcons.pencil_ellipsis_rectangle,
                   color: Colors.black,
                 ),
                 title: const Text(
@@ -135,6 +135,7 @@ class _LoginPageState extends State<LoginPage> {
     return Material(
       color: Theme.of(context).canvasColor,
       child: Scaffold(
+        backgroundColor: Colors.lightBlueAccent,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Form(
@@ -156,7 +157,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: MediaQuery.of(context).size.height / 3,
                           child: Image.asset(
                             "assets/images/welcomeImg.png",
-                            fit: BoxFit.cover,
+                            fit: BoxFit.fill,
                           ),
                         ),
                       ),
@@ -254,6 +255,7 @@ class _LoginPageState extends State<LoginPage> {
                               decoration: BoxDecoration(
                                 color: Colors.black,
                                 borderRadius: BorderRadius.circular(50),
+                                
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.withOpacity(0.5),

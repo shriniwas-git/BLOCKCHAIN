@@ -140,7 +140,9 @@ class _PatientHomePageState extends State<PatientHomePage> {
               ),
             ],
           ),
+          
           child: Padding(
+            
             padding: const EdgeInsets.all(8.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -151,6 +153,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   size: 20,
                 ),
                 Padding(
+                  
                   padding: EdgeInsets.all(8.0),
                   child: VerticalDivider(
                     color: Colors.white,
@@ -169,7 +172,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
           ),
         ),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.lightBlueAccent,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -304,7 +307,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                         ),
                       ),
                       Text(
-                        'Medical History',
+                        'Medical Records',
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,

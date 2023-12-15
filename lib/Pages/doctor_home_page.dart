@@ -149,7 +149,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.lightBlueAccent,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -650,7 +650,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                                                                           ),
                                                                           SizedBox(
                                                                             width:
-                                                                                MediaQuery.of(context).size.width - 200,
+                                                                                MediaQuery.of(context).size.width - 220,
                                                                             // height: 30,
                                                                             child:
                                                                                 Text(

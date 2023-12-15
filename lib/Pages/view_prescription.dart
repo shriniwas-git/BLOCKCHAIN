@@ -14,7 +14,7 @@ class ViewPrescription extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 179, 208, 194),
         body: SafeArea(
             child: SingleChildScrollView(
           child: Padding(
